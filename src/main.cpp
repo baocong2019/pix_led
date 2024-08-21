@@ -53,7 +53,7 @@ void loop(){
   for(int i = 0; i < numledsToLight; i++){
     leds[i] = CRGB::yellow;
   }
-
+s
   FastLED.show();
 }
 */
