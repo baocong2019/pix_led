@@ -7,7 +7,7 @@
 
 
 CRGB leds[NUM_LEDS];
-
+//定义led数组
 CRGB colors[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::Blue, CRGB::Indigo, CRGB::Violet};//定义七彩颜色数组 indigo:紫罗兰色 violet:紫色
 
 
