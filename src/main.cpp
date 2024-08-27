@@ -1,6 +1,3 @@
-#include <Arduino.h>
-#include <FastLED.h>
-#include "../inc/Character.h"
 #include "../inc/Config.h"
 
 

@@ -1,6 +1,5 @@
 #include "../inc/Character.h"
-#include "../inc/Config.h"
-#include "../inc/Function.h"
+
 
 /*******************************************************
  * 函数名：showCharacter
@@ -17,7 +16,7 @@ void showCharacter(int char_x, int char_y, int c, int charfont)
 
     //变量 characterSpace 代表的是字符在字体位图中的索引位置。
     //具体来说，它表示特定字符在字体位图数组中的位置，通过这个索引可以提取出该字符的像素数据。
-    int i, x, y, characterSpace;
+    int i, x, y, characterSpace=0;
     unsigned char line;//当前行的像素数据  像素行号
     unsigned short ct;//
 

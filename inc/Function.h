@@ -1,8 +1,8 @@
 #ifndef __FUNCTION_H__
 #define __FUNCTION_H__
 
+#include "../inc/Config.h"
 
-#include <stdint.h>
 
 uint16_t XY(uint8_t x, uint8_t y);
 uint16_t cn_utf8_to_unicode(const uint32_t cInput);

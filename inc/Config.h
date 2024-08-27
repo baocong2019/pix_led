@@ -1,6 +1,11 @@
 #include"Pixfont.h"
 #include"Cnfont.h"
 #include"FastLED.h"
+#include <Arduino.h>
+#include <FastLED.h>
+#include <stdint.h>
+#include "../inc/Character.h"
+#include "../inc/Function.h"
 
 #define RotationMode 0
 #define kMatrixWidth 8
@@ -16,9 +21,9 @@ CRGB *const leds(leds_plus_safety_pixel + 1);
 CRGB leds_fonts_plus_safety_pixel[NUM_LEDS + 1]; //字体灯珠，存在但不显示
 CRGB *const leds_font(leds_fonts_plus_safety_pixel + 1);
 
-CRGB leds[NUM_LEDS];
+// CRGB leds[NUM_LEDS];
 //定义led数组s
-CRGB colors[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::Blue, CRGB::Indigo, CRGB::Violet};//定义七彩颜色数组 indigo:紫罗兰色 violet:紫色
+// CRGB colors[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::Blue, CRGB::Indigo, CRGB::Violet};//定义七彩颜色数组 indigo:紫罗兰色 violet:紫色
 
 
 //**********************字体****************************
