@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "pix_led",
+			"path": "."
+		}
+	],
+	"settings": {
+		"commentTranslate.hover.enabled": true,
+		"commentTranslate.targetLanguage": "zh-CN",
+		"commentTranslate.source": "DarkCWK.youdao-youdao"
+	}
+}
