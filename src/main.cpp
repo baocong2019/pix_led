@@ -1,14 +1,31 @@
 #include "../inc/Config.h"
+#include "../inc/Pixfont.h"//英文字库头文件
+#include "../inc/Cnfont.h"//中文字库头文件
+#include "../inc/Character.h"
 
+/**
+ * @brief 
+ * @note  设置两组 CRGB 数组是为了分别管理实际显示的灯珠和用于字体显示的灯珠，以便更灵活地控制显示效果和内存使用。
+ */
+CRGB leds_plus_safety_pixel[NUM_LEDS + 1];    //灯珠创建
+CRGB *const leds(leds_plus_safety_pixel + 1);
+CRGB leds_fonts_plus_safety_pixel[NUM_LEDS + 1]; //字体灯珠，存在但不显示
+CRGB *const leds_font(leds_fonts_plus_safety_pixel + 1);
 
-void setup() {
+void setup() 
+{
+
+  Serial.begin(115200);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-  FastLED.setBrightness(100); //设置亮度为100
+  FastLED.setBrightness(50); //设置亮度为50   数值范围：0-255  越大越亮
+
 }
 
 void loop() 
 {
+
   characterTest();
+
 }
 
 
@@ -16,6 +33,13 @@ void loop()
 /**
    * @brief 7个颜色循环显示 
    * 
+   * 
+   * 
+   *   // CRGB leds[NUM_LEDS];
+      //定义led数组s
+      // CRGB colors[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::Blue, CRGB::Indigo, CRGB::Violet};//定义七彩颜色数组 indigo:紫罗兰色 violet:紫色
+
+
    */
   /*
   for(int i = 0; i < 7; i++) 

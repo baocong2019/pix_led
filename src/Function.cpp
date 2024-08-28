@@ -37,7 +37,7 @@ uint16_t XY(uint8_t x, uint8_t y)
         i = (y * kMatrixWidth) + x;
     }
 
-    if (kMatrixSerpentineLayout == true)
+    if (kMatrixSerpentineLayout == true)    //通过判断是否为蛇形连接，来确定灯珠编号，进行排序
     {
         if (y & 0x01)
         {
