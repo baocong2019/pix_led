@@ -8,6 +8,9 @@
 	"settings": {
 		"commentTranslate.hover.enabled": true,
 		"commentTranslate.targetLanguage": "zh-CN",
-		"commentTranslate.source": "DarkCWK.youdao-youdao"
+		"commentTranslate.source": "DarkCWK.youdao-youdao",
+		"files.associations": {
+			"algorithm": "cpp"
+		}
 	}
 }

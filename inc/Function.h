@@ -11,5 +11,6 @@
 uint16_t XY(uint8_t x, uint8_t y);
 uint16_t cn_utf8_to_unicode(const uint32_t cInput);
 uint16_t XYsafe(uint8_t x, uint8_t y);
+void tickerCount();
 
 #endif // __FUNCTION_H__
