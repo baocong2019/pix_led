@@ -35,7 +35,7 @@ void setup()
 void loop() 
 {
   tickerObject.update();//Ticker对象更新
- // characterTest();
+  //characterTest();
   strsliptest();
 }
 

@@ -1,4 +1,5 @@
 #include "../inc/Function.h"
+#include <Arduino.h>
 
 int count = 0;//定时器时间计数器
 
@@ -98,5 +99,8 @@ uint16_t cn_utf8_to_unicode(const uint32_t cInput)
 void tickerCount()
 {
     count++;
+    if(count % 4 == 0){
+    Serial.println(count);
+    }
     if (count == 9999) count = 0;  
 }

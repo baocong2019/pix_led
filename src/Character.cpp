@@ -1,7 +1,7 @@
 #include "../inc/Character.h"
+#include <Arduino.h>
 
-
-int wordshow_i = 0;
+int wordshow_i = 0;//滑动字体变量i
 //********滚动显示参数**********//
 int pix_l;
 int len_t, cnstr_p = 0;
@@ -64,16 +64,16 @@ struct FontAttribute fontattribute[]=    //各字体属性设置  Attribute:属�
         1,
         5,
     },
-    // {
-    //     apple6x10_bitmap,
-    //     apple6x10_index,
-    //     sizeof(apple6x10_index) / sizeof(apple6x10_index[0]),
-    //     6,
-    //     10,
-    //     2,
-    //     -1,
-    //     6,
-    // },
+    {
+        apple6x10_bitmap,
+        apple6x10_index,
+        sizeof(apple6x10_index) / sizeof(apple6x10_index[0]),
+        6,
+        10,
+        2,
+        -1,
+        6,
+    },
     {
         Pix5x7_bitmap,
         Pix5x7_index,
@@ -324,16 +324,16 @@ void showCharacter(int char_x, int char_y, int c, int charfont)
 void characterTest()
 {
     int i;
+
     Serial.println("Show Char");
+
     for (i = 0; i < 58; i++)
     {
-        fill_solid(leds_font, 64, CRGB::Green);//前景色
-        fill_solid(leds, 64, CRGB::Black);//背景色
+        fill_solid(leds_font, NUM_LEDS, CRGB::Green);//前景色
+        fill_solid(leds, NUM_LEDS, CRGB::Black);//背景色
         showCharacter(0, 0, 'A' + i, Pix5x7);
         FastLED.show();
-        // delay(500);
-        count++;
-        Serial.println(count,DEC);
+        delay(500);
     }
 }
 
@@ -491,18 +491,28 @@ void showStringSlip(int char_x, int char_y, char *str, int len)
 void strsliptest()
 {
     //字符太多会出现bug
-    char str[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ   "; //"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz   ";
+    char str[] = "ABCDEFGH   "; //"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzHIJKLMNOPQRSTUVWXYZ   ";
     int i, j;
     for (i = 5; i >= 0; i--)
     {
         strslipconfig.cfont = i;//cfont:字符字体
         strslipconfig.cspace = fontattribute[i].font_test_space;//font_test_space:字符间距
-        // for (j = 0; j < 4; j++)
-        // {
-        strslipconfig.font_color_func = SolidColor; // j font_color_func:字体颜色
+        for (j = 0; j < 4; j++)
+        {
+        // strslipconfig.font_color_func = SolidColor; // j font_color_func:字体颜色
+        strslipconfig.font_color_func = j; 
         setSlipStrLen(str, strlen(str));
-        showStringSlip(8, 0, str, strlen(str));
-        // }
+        showStringSlip(4, 0, str, strlen(str));
+        }
+
+        // Serial.println("strslipconfig.cfont =");
+        // Serial.println(strslipconfig.cfont);
+
+        // Serial.println("strslipconfig.cspace =");
+        // Serial.println(fontattribute[i].font_test_space);
+
+        // Serial.println("strslipconfig.font_color_func =");
+        // Serial.println(strslipconfig.font_color_func);
     }
 }
 
