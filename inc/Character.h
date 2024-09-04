@@ -7,9 +7,13 @@
 
 
 void showCharacter(int char_x, int char_y, int c, int charfont);
-void characterTest();
 void setSlipStrLen(char *str, int len);
 void showStringSlip(int char_x, int char_y, char *str, int len);
+
+void characterTest();
 void strsliptest();
+void cnstrsliptest();
+void strtwinkletest();
+void cnstrtwinkletest();
 
 #endif // CHARACTER_H

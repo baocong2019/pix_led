@@ -35,8 +35,14 @@ void setup()
 void loop() 
 {
   tickerObject.update();//Ticker对象更新
-  //characterTest();
-  strsliptest();
+
+  //characterTest();//字符测试
+
+  //strsliptest();//字符串滑动测试
+  //cnstrsliptest(); //中文字符串滑动测试
+
+  //strtwinkletest(); //字符串闪烁测试
+  cnstrtwinkletest();//中文字符串闪烁测试
 }
 
 

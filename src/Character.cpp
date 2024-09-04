@@ -1,5 +1,6 @@
 #include "../inc/Character.h"
 #include <Arduino.h>
+#include "../inc/MyPalette.h"
 
 int wordshow_i = 0;//滑动字体变量i
 //********滚动显示参数**********//
@@ -220,6 +221,25 @@ struct StrSlipConfig //滑动显示配置
     int cfont = Apple4x6;     //字符字体
 } strslipconfig; //滑动显示配置
 
+
+struct StrTwinkleConfig //闪烁显示配置
+{
+    int font_color_func = SolidColor;                                    //字体颜色函数
+    struct SolidColorVar font_sc_var = {leds_font, NUM_LEDS, CRGB::White}; //四种显示函数默认变量
+    struct RainbowColorVar font_rc_var = {leds_font, NUM_LEDS, 30, 30};
+    struct GradiantColorVar font_gc_var = {leds_font, 0, CRGB::Red, NUM_LEDS - 1, CRGB::Blue};
+    struct PaletteColorVar font_pc_var = {leds_font, NUM_LEDS, 0, 3, (CRGBPalette16)RainbowColors_p , 255, LINEARBLEND};
+
+    int bg_color_func = SolidColor;                                 //背景颜色函数
+    struct SolidColorVar bg_sc_var = {leds, NUM_LEDS, CRGB::Black}; //四种显示函数默认变量
+    struct RainbowColorVar bg_rc_var = {leds, NUM_LEDS, 10, 10};
+    struct GradiantColorVar bg_gc_var = {leds, 0, CRGB::Yellow, NUM_LEDS - 1, CRGB::Green};
+    struct PaletteColorVar bg_pc_var = {leds, NUM_LEDS, 0, 3, (CRGBPalette16)CloudColors_p, 255, LINEARBLEND};
+
+    int twkspeed = 300;  //闪烁速度  ms/次
+    int cfont = Apple4x6;     //字符字体
+} strstwinkleconfig; //闪烁显示配置
+
 /*******************************************************
  * 函数名：showCharacter
  * 描述  ：显示单个字符
@@ -320,6 +340,7 @@ void showCharacter(int char_x, int char_y, int c, int charfont)
  * 描述  ：字符显示测试
  * 参数  ：无
  * 返回值：无
+ * 现象 ：从大写A到小写z 显示58个字符，每隔500ms显示一个字符。
  **********************************************************/
 void characterTest()
 {
@@ -487,6 +508,8 @@ void showStringSlip(int char_x, int char_y, char *str, int len)
  * 描述  ：滚动显示英文字符串测试
  * 参数  ：无
  * 返回值：无
+ * 现象 ：从6种字体中选择一种，每种字体显示ABCDEFGH   字符，滑动速度由strslipconfig.strspeed控制。
+ * 结果： 未实现多字体滑动，只有单字体
  **********************************************************/
 void strsliptest()
 {
@@ -516,3 +539,180 @@ void strsliptest()
     }
 }
 
+/*******************************************************
+ * 函数名：cnstrsliptest
+ * 描述  ：滚动显示中英文字符串测试
+  * 参数  ：无
+ * 返回值：无
+ * 现象：滑动显示中文显示：你好世界！Hellow world!    
+ **********************************************************/
+void cnstrsliptest()
+{
+    //字符太多会出现bug
+    char str[] = "你好世界！Hellow world!    ";
+    //char *p;
+    strslipconfig.cfont = Cnfont8x8;
+    strslipconfig.cspace = fontattribute[Cnfont8x8].font_test_space;
+    strslipconfig.font_color_func = PaletteColor; // SolidColor
+    // strslipconfig.font_pc_var.pal = myRedWhiteBluePalette_p;
+    setSlipStrLen(str, strlen(str));
+    showStringSlip(8, 0, str, strlen(str));
+}
+/*******************************************************
+ * 函数名：showStringTwinkle
+ * 描述  ：闪动显示字符串
+ * 参数  ：
+ *        @char_x     字符左上角x坐标
+ *        @char_y     字符左上角y坐标
+ *        @str        字符串
+ *        @len        字符串长度
+ * 返回值：无
+ **********************************************************/
+void showStringTwinkle(int char_x, int char_y, char *str, int len)
+{
+    //count 每20ms调用一次，在ticker库中引用
+    if (count > (strstwinkleconfig.twkspeed/20))
+    {
+        if(wordshow_i >= len_t)
+        {
+            wordshow_i = 0;
+            cnstr_p = 0;
+        }
+        
+        switch (strstwinkleconfig.bg_color_func)
+        {
+        case SolidColor:
+            fill_solid(strstwinkleconfig.bg_sc_var.leds, strstwinkleconfig.bg_sc_var.numToFill, strstwinkleconfig.bg_sc_var.color);
+            break;
+        case RainbowColor:
+            fill_rainbow(strstwinkleconfig.bg_rc_var.pFirstLED, strstwinkleconfig.bg_rc_var.numToFill, strstwinkleconfig.bg_rc_var.initialhue, strstwinkleconfig.bg_rc_var.deltahue);
+            break;
+        case GradiantColor:
+            fill_gradient_RGB(strstwinkleconfig.bg_gc_var.leds, strstwinkleconfig.bg_gc_var.startpos, strstwinkleconfig.bg_gc_var.startcolor, strstwinkleconfig.bg_gc_var.endpos, strstwinkleconfig.bg_gc_var.endcolor);
+            break;
+        case PaletteColor:
+            fill_palette(strstwinkleconfig.bg_pc_var.L, strstwinkleconfig.bg_pc_var.N, strstwinkleconfig.bg_pc_var.startIndex, strstwinkleconfig.bg_pc_var.incIndex, strstwinkleconfig.bg_pc_var.pal, strstwinkleconfig.bg_pc_var.brightness, strstwinkleconfig.bg_pc_var.blendType);
+            break;
+        default:
+            break;
+        }
+        switch (strstwinkleconfig.font_color_func)
+        {
+        case SolidColor:
+            fill_solid(strstwinkleconfig.font_sc_var.leds, strstwinkleconfig.font_sc_var.numToFill, strstwinkleconfig.font_sc_var.color);
+            break;
+        case RainbowColor:
+            fill_rainbow(strstwinkleconfig.font_rc_var.pFirstLED, strstwinkleconfig.font_rc_var.numToFill, strstwinkleconfig.font_rc_var.initialhue, strstwinkleconfig.font_rc_var.deltahue);
+            break;
+        case GradiantColor:
+            fill_gradient_RGB(strstwinkleconfig.font_gc_var.leds, strstwinkleconfig.font_gc_var.startpos, strstwinkleconfig.font_gc_var.startcolor, strstwinkleconfig.font_gc_var.endpos, strstwinkleconfig.font_gc_var.endcolor);
+            break;
+        case PaletteColor:
+            fill_palette(strstwinkleconfig.font_pc_var.L, strstwinkleconfig.font_pc_var.N, strstwinkleconfig.font_pc_var.startIndex, strstwinkleconfig.font_pc_var.incIndex, strstwinkleconfig.font_pc_var.pal, strstwinkleconfig.font_pc_var.brightness, strstwinkleconfig.font_pc_var.blendType);
+            break;
+        default:
+            break;
+        }
+        if (strstwinkleconfig.cfont == Cnfont8x8)
+        {
+            if (cnstr_type[wordshow_i] == 1)
+            {
+                showCharacter(char_x, char_y, (int)((str[cnstr_p] << 16) + (str[cnstr_p + 1] << 8) + str[cnstr_p + 2]), strstwinkleconfig.cfont);
+                cnstr_p += 3;
+            }
+            else
+            {
+                showCharacter(char_x, char_y, (int)str[cnstr_p], strstwinkleconfig.cfont);
+                cnstr_p += 1;
+            }
+        }
+        else
+        {
+            showCharacter(char_x, char_y, str[wordshow_i], strstwinkleconfig.cfont);
+        }
+        FastLED.show();
+        wordshow_i++;
+        count = 0; 
+    }
+}
+
+/*******************************************************
+ * 函数名：setTwinkleStrLen
+ * 描述  ：获取用于闪烁显示的字符串中的中英文及字符数信息
+ * 参数  ：
+ *        @str      字符串
+ *        @len      字符串长度
+ * 返回值：无
+ **********************************************************/
+void setTwinkleStrLen(char *str, int len)
+{
+    int i, j;
+    if (strstwinkleconfig.cfont == Cnfont8x8)
+    {
+        for (i = 0, j = 0; (uint8_t)str[i] != 0 && j < 200; i++, j++)
+        {
+            if ((uint8_t)str[i] < 0xE0) //非中文
+            {
+                cnstr_type[j] = 0;
+            }
+            else //中文
+            {
+                cnstr_type[j] = 1;
+                i += 2;
+            }
+        }
+        cnstr_type[j] = 2;
+        len_t = j;
+    }
+    else
+    {
+        len_t = len;
+    }
+    wordshow_i=0;  
+}
+
+/*******************************************************
+ * 函数名：strtwinkletest
+ * 描述  ：闪动显示英文字符串测试
+ * 参数  ：无
+ * 返回值：无
+ * 现象：显示0123456789 显示速度由strstwinkleconfig.twkspeed控制。
+ **********************************************************/
+void strtwinkletest()
+{
+    char str[] = "0123456789"; //"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"; //"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    int i, j, x, y;
+    for (i = 6; i >= 0; i--)
+    {
+        strstwinkleconfig.cfont = i; // i
+        // for (j = 0; j < 4; j++)
+        // {
+        strstwinkleconfig.font_color_func = SolidColor; // j
+        // strstwinkleconfig.font_color_func = j; // j
+        x = fontattribute[i].font_test_x;
+        y = fontattribute[i].font_test_y;
+        setTwinkleStrLen(str, strlen(str));
+        showStringTwinkle(x, y, str, strlen(str));
+        // }
+    }
+}
+
+/*******************************************************
+ * 函数名：cnstrtwinkletest
+ * 描述  ：闪动显示中英文字符串测试
+ * 参数  ：无
+ * 返回值：无
+ **********************************************************/
+void cnstrtwinkletest()
+{
+    //字符太多会出现bug
+    char str[] = "你好世界！Hellow world!";
+    //char *p;
+    strstwinkleconfig.cfont = Cnfont8x8;
+    strstwinkleconfig.twkspeed = 500;
+    strstwinkleconfig.font_color_func = PaletteColor; // SolidColor
+    strstwinkleconfig.font_pc_var.pal = myRedWhiteBluePalette_p;
+    strstwinkleconfig.font_pc_var.incIndex = 1;
+    setTwinkleStrLen(str, strlen(str));
+    showStringTwinkle(0, 0, str, strlen(str));
+}
