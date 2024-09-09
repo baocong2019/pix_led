@@ -11,7 +11,7 @@
 #ifndef __MYPALETTE_H__
 #define __MYPALETTE_H__
 
-#include <FastLED.h>
+#include "FastLED.h"
 /*自定义色盘配置文件*/
 /*可以在此处自定义色盘，并在动态画面或文字显示中选择该色盘*/
 const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
